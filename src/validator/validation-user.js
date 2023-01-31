@@ -5,7 +5,11 @@ const { check, validationResult } = require("express-validator");
 
 // USERS VALIDATION
 const rulesAuth = [
-  check("username").notEmpty().withMessage("name cannot empty").trim().escape(),
+  check("fullname")
+    .notEmpty()
+    .withMessage("full name cannot empty")
+    .trim()
+    .escape(),
 
   check("email")
     .notEmpty()
@@ -13,6 +17,16 @@ const rulesAuth = [
     .isEmail()
     .normalizeEmail()
     .withMessage("must email format")
+    .trim()
+    .escape(),
+
+  check("phone")
+    .notEmpty()
+    .withMessage("password cannot empty")
+
+    //.isMobilePhone("id-ID")//untuk indonesia
+    .isMobilePhone("id-ID")
+    .withMessage("must phone number")
     .trim()
     .escape(),
 
