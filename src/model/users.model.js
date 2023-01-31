@@ -4,15 +4,15 @@ const { v4: uuidv4 } = require('uuid');
 
 const usersModel = {
     // CREATE
-    create: ({ email, password, mobile_number, name, gender, birthdate, address }) => {
+    create: ({ full_name, img_profile, email, password, phone, job_desk, domicile, ig_account, github_account, gitlab_account, description }) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO users (id, email, password, mobile_number, name, gender, birthdate, address) VALUES ('${uuidv4()}','${email}','${password}','${mobile_number}','${name}','${gender}','${birthdate}','${address}')`,
+                `INSERT INTO users (id_user, full_name, img_profile, email, password, phone, job_desk, domicile, ig_account, github_account, gitlab_account, description) VALUES ('${uuidv4()}','${full_name}','${img_profile}','${email}','${password}','${phone}','${job_desk}','${domicile}', '${ig_account}', '${github_account}', '${gitlab_account}', '${description}')`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
                     } else {
-                        return resolve({ email, password, mobile_number, name, gender, birthdate, address })
+                        return resolve({ full_name, img_profile, email, password, phone, job_desk, domicile, ig_account, github_account, gitlab_account, description })
                     }
                 }
             )
@@ -20,25 +20,26 @@ const usersModel = {
     },
 
     // READ
-    query: (search, name, sortBy, limit, offset) => {
-        let orderQuery = `ORDER BY name ${sortBy} LIMIT ${limit} OFFSET ${offset}`
+    query: (search, full_name, sortBy, limit, offset) => {
+        let orderQuery = `ORDER BY full_name ${sortBy} LIMIT ${limit} OFFSET ${offset}`
 
-        if (!search && !name) {
+        if (!search && !full_name) {
             return orderQuery
-        } else if (search && name) {
-            return `WHERE name ILIKE '%${search}%' AND name ILIKE '${name}%' ${orderQuery}`
-        } else if (search || name) {
-            return `WHERE name ILIKE '%${search}%' OR name ILIKE '${name}%' ${orderQuery}`
+        } else if (search && full_name) {
+            return `WHERE full_name ILIKE '%${search}%' AND full_name ILIKE '${full_name}%' ${orderQuery}`
+        } else if (search || full_name) {
+            return `WHERE full_name ILIKE '%${search}%' OR full_name ILIKE '${full_name}%' ${orderQuery}`
         } else {
             return orderQuery
         }
     },
 
-    read: function (search, name, sortBy = 'ASC', limit = 25, offset = 0) {
+    read: function (search, full_name, sortBy = 'ASC', limit = 25, offset = 0) {
         return new Promise((resolve, reject) => {
             db.query(
-                `SELECT * from users ${this.query(search, name, sortBy, limit, offset)}`,
+                `SELECT * from users ${this.query(search, full_name, sortBy, limit, offset)}`,
                 (err, result) => {
+                    console.log(result);
                     if (err) {
                         return reject(err.message)
                     } else {
@@ -49,10 +50,10 @@ const usersModel = {
         })
     },
 
-    readDetail: (id) => {
+    readDetail: (id_user) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `SELECT * from users WHERE id='${id}'`,
+                `SELECT * from users WHERE id_user='${id_user}'`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
@@ -65,19 +66,22 @@ const usersModel = {
     },
 
     // UPDATE
-    update: ({ id, email, password, mobile_number, name, gender, birthdate, address, role }) => {
+    update: ({ id_user, full_name, img_profile, email, password, phone, job_desk, domicile, ig_account, github_account, gitlab_account, description }) => {
         return new Promise((resolve, reject) => {
-            db.query(`SELECT * FROM users WHERE id='${id}'`, (err, result) => {
+            db.query(`SELECT * FROM users WHERE id_user='${id_user}'`, 
+            (err, result) => {
+                // console.log(result);
                 if (err) {
                     return reject(err.message);
                 } else {
                     db.query(
-                        `UPDATE users SET name='${name || result.rows[0].name}', email='${email || result.rows[0].email}', password='${password || result.rows[0].password}', mobile_number='${mobile_number || result.rows[0].mobile_number}', gender='${gender || result.rows[0].gender}', birthdate='${birthdate || result.rows[0].birthdate}', address='${address || result.rows[0].address}', role='${role || result.rows[0].role}' WHERE id='${id}'`,
+                        `UPDATE users SET full_name='${full_name || result.rows[0].full_name}', img_profile='${img_profile || result.rows[0].img_profile}', email='${email || result.rows[0].email}', password='${password || result.rows[0].password}', phone='${phone || result.rows[0].phone}', job_desk='${job_desk || result.rows[0].job_desk}', domicile='${domicile || result.rows[0].domicile}', ig_account='${ig_account || result.rows[0].ig_account}', github_account='${github_account || result.rows[0].github_account}', gitlab_account='${gitlab_account || result.rows[0].gitlab_account}', description='${description || result.rows[0].description}' WHERE id_user='${id_user}'`,
                         (err, result) => {
+                            console.log(result);
                             if (err) {
                                 return reject(err.message)
                             } else {
-                                return resolve({ id, email, password, mobile_number, name, gender, birthdate, address, role })
+                                return resolve({ id_user, full_name, img_profile, email, password, phone, job_desk, domicile, ig_account, github_account, gitlab_account, description })
                             }
                         }
                     )
@@ -88,15 +92,15 @@ const usersModel = {
 
     // DELETE
     // untuk remove tergantung paramnya saja, untuk kasus dibawah ini yaitu id.
-    remove: (id) => {
+    remove: (id_user) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `DELETE from users WHERE id='${id}'`,
+                `DELETE from users WHERE id_user='${id_user}'`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
                     } else {
-                        return resolve(`users ${id} has been deleted`)
+                        return resolve(`users ${id_user} has been deleted`)
                     }
                 }
             )

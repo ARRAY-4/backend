@@ -1,14 +1,13 @@
 const usersModel = require("../model/users.model.js")
-// const { Pagination, formResponse } = require("../../helper")
-//test
+const { Pagination } = require("../../helper")
 
 const usersController = {
     create: (req, res) => {
         return usersModel.create(req.body)
             .then((result) => {
-                return formResponse(201, "success", result, res)
+                return res.status(201).send({ message: "Success", data: result })
             }).catch((error) => {
-                return formResponse(500, error)
+                return res.status(500).send(error)
             })
     },
     read: (req, res) => {
@@ -16,9 +15,9 @@ const usersController = {
         let offset = Pagination.buildOffset(page, limit)
         return usersModel.read(search, name, sortBy, limit, offset)
             .then((result) => {
-                return formResponse(200, "success", result, res)
+                return res.status(200).send({ message: "Success", data: result })
             }).catch((error) => {
-                return formResponse(500, error)
+                return res.status(500).send(error)
             })
     },
 
@@ -31,7 +30,7 @@ const usersController = {
                     return res.status(404).send({ message: "Sorry data not found! Please check your input ID!" })
                 }
             }).catch((error) => {
-                return formResponse(500, error)
+                return res.status(500).send(error)
             })
     },
     update: (req, res) => {
@@ -41,17 +40,17 @@ const usersController = {
         }
         return usersModel.update(request)
             .then((result) => {
-                return formResponse(201, "success", result, res)
+                return res.status(201).send({ message: "Success", data: result })
             }).catch((error) => {
-                return formResponse(500, error)
+                return res.status(500).send(error)
             })
     },
     remove: (req, res) => {
         return usersModel.remove(req.params.id)
             .then((result) => {
-                return formResponse(200, "success", result, res)
+                return res.status(200).send({ message: "Success", data: result })
             }).catch((error) => {
-                return formResponse(500, error)
+                return res.status(500).send(error)
             })
     }
 }
