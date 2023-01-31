@@ -24,7 +24,7 @@ const authController = {
                 user: {
                   id: result.id_users,
                   username: result.full_name,
-                  image: result.image_user,
+                  image: result.img_profile,
                 },
               },
               res
@@ -55,7 +55,7 @@ const authController = {
                 company: {
                   id: result.id_company,
                   username: result.user_company,
-                  image: result.image_company,
+                  image: result.img_company,
                 },
               },
               res
@@ -77,12 +77,12 @@ const authController = {
         return res.status(500).send({ message: err.message });
       } else {
         const request = {
-          full_name: req.body.full_name,
+          fullname: req.body.fullname,
           email: req.body.email,
-          phone: req.body.phone,
           password: hash,
+          phone: req.body.phone,
         };
-
+        console.log(request);
         return authModel
           .registeruser(request)
           .then((result) => {
@@ -105,13 +105,14 @@ const authController = {
         return res.status(500).send({ message: err.message });
       } else {
         const request = {
-          company: req.body.company,
-          email: req.body.email,
           name: req.body.name,
+          email: req.body.email,
+          company: req.body.company,
           field: req.body.field,
           phone: req.body.phone,
           password: hash,
         };
+
         return authModel
           .registercompany(request)
           .then((result) => {

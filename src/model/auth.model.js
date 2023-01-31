@@ -8,7 +8,7 @@ const bcrypt = require("bcrypt");
 const authModel = {
   loginuser: ({ email, password }) => {
     return new Promise((resolve, reject) => {
-      db.query("select * from user where email=$1", [email], (err, result) => {
+      db.query("select * from users where email=$1", [email], (err, result) => {
         if (err) {
           return reject(err.message);
         } else {
@@ -34,7 +34,7 @@ const authModel = {
       });
     });
   },
-  logincompay: ({ email, password }) => {
+  logincompany: ({ email, password }) => {
     return new Promise((resolve, reject) => {
       db.query(
         "select * from company where email=$1",
@@ -66,13 +66,15 @@ const authModel = {
       );
     });
   },
+
   registeruser: ({ full_name, email, phone, password }) => {
     return new Promise((resolve, reject) => {
       db.query(
         //postgresql
-        `insert into user (id_users,email,password,full_name,phone) values ($1,$2,$3,$4,$5)`,
+        `insert into users (id_user,full_name,email,password,phone) values ($1,$2,$3,$4,$5)`,
         //jika mysql menggukanan='?' dan urutannya wajib urut
-        [uuidv4(), email, password, full_name, phone],
+        [uuidv4(), full_name, email, password, phone],
+
         (err, result) => {
           if (err) {
             return reject(err);
@@ -83,30 +85,17 @@ const authModel = {
       );
     });
   },
-  registercompany: ({
-    user_company,
-    email,
-    name_company,
-    field_company,
-    phone,
-    password,
-  }) => {
+
+  registercompany: ({ name, email, company, field, phone, password }) => {
     return new Promise((resolve, reject) => {
       db.query(
         //postgresql
-        `insert into users (id_company,user_company,email,password,name_company,phone,field_company) values ($1,$2,$3,$4,$5,$6,$7)`,
+        `insert into company (id_company,user_company,email,password,name_company,phone,field_company) values ($1,$2,$3,$4,$5,$6,$7)`,
         //jika mysql menggukanan='?' dan urutannya wajib urut
-        [
-          uuidv4(),
-          user_company,
-          email,
-          password,
-          name_company,
-          phone,
-          field_company,
-        ],
+        [uuidv4(), name, email, password, company, phone, field],
         (err, result) => {
           if (err) {
+            console.log(err);
             return reject(err);
           } else {
             return resolve("Register success"); //jgn ditampilkan hasil regis nya agar nanti jwt nya aman
