@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express();
 const formUpload = require('../middleware/formUpload')
-const validation = require('../middleware/validation')
+// const validation = require('../middleware/validation')
 
 // import controller
 const usersController = require('../controllers/users.controller.js')
