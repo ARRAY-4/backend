@@ -39,7 +39,7 @@ const usersModel = {
             db.query(
                 `SELECT * from users ${this.query(search, full_name, sortBy, limit, offset)}`,
                 (err, result) => {
-                    console.log(result);
+                    // console.log(result);
                     if (err) {
                         return reject(err.message)
                     } else {
@@ -68,6 +68,7 @@ const usersModel = {
     // UPDATE
     update: ({ id_user, full_name, img_profile, email, password, phone, job_desk, domicile, ig_account, github_account, gitlab_account, description }) => {
         return new Promise((resolve, reject) => {
+            // console.log(id_user);
             db.query(`SELECT * FROM users WHERE id_user='${id_user}'`, 
             (err, result) => {
                 // console.log(result);
@@ -77,7 +78,7 @@ const usersModel = {
                     db.query(
                         `UPDATE users SET full_name='${full_name || result.rows[0].full_name}', img_profile='${img_profile || result.rows[0].img_profile}', email='${email || result.rows[0].email}', password='${password || result.rows[0].password}', phone='${phone || result.rows[0].phone}', job_desk='${job_desk || result.rows[0].job_desk}', domicile='${domicile || result.rows[0].domicile}', ig_account='${ig_account || result.rows[0].ig_account}', github_account='${github_account || result.rows[0].github_account}', gitlab_account='${gitlab_account || result.rows[0].gitlab_account}', description='${description || result.rows[0].description}' WHERE id_user='${id_user}'`,
                         (err, result) => {
-                            console.log(result);
+                            // console.log(result) // wajar kosong karna behavior dari dbnya ketika di update/delete maka result.rows nya itu kosong
                             if (err) {
                                 return reject(err.message)
                             } else {
@@ -95,12 +96,13 @@ const usersModel = {
     remove: (id_user) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `DELETE from users WHERE id_user='${id_user}'`,
+                `DELETE from users WHERE id_user='${id_user}' RETURNING img_profile`,
                 (err, result) => {
+                    console.log(result);
                     if (err) {
                         return reject(err.message)
                     } else {
-                        return resolve(`users ${id_user} has been deleted`)
+                        return resolve(result.rows)
                     }
                 }
             )

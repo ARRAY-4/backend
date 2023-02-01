@@ -1,9 +1,15 @@
 const usersModel = require("../model/users.model.js")
 const { Pagination } = require("../../helper")
+const { unlink } = require('node:fs')
 
 const usersController = {
     create: (req, res) => {
-        return usersModel.create(req.body)
+        // console.log(req.file);
+        const request = {
+            ...req.body,
+            img_profile: req.file.filename,
+        }
+        return usersModel.create(request)
             .then((result) => {
                 return res.status(201).send({ message: "Success", data: result })
             }).catch((error) => {
@@ -36,10 +42,11 @@ const usersController = {
     update: (req, res) => {
         const request = {
             ...req.body,
-            id: req.params.id
+            id_user: req.params.id
         }
         return usersModel.update(request)
             .then((result) => {
+                console.log(result);
                 return res.status(201).send({ message: "Success", data: result })
             }).catch((error) => {
                 return res.status(500).send(error)
@@ -48,7 +55,15 @@ const usersController = {
     remove: (req, res) => {
         return usersModel.remove(req.params.id)
             .then((result) => {
-                return res.status(200).send({ message: "Success", data: result })
+                console.log(result);
+                // console.log(result.rows[0].img_profile);
+                for (let i = 0; i < result.length; i++) {
+                    console.log(`public/uploads/images/${result[i].img_profile}`);
+                    unlink(`public/uploads/images/${result[i].img_profile}`, (err) => {
+                        if (err) throw err;
+                    });
+                }
+                return res.status(200).send({ message: "Success", data: `users ${req.params.id} has been deleted` })
             }).catch((error) => {
                 return res.status(500).send(error)
             })
