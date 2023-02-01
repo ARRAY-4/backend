@@ -39,26 +39,40 @@ const usersController = {
                 return res.status(500).send(error)
             })
     },
+
+    // SINGLE
     update: (req, res) => {
-        const request = {
-            ...req.body,
-            id_user: req.params.id
-        }
-        return usersModel.update(request)
-            .then((result) => {
-                console.log(result);
-                return res.status(201).send({ message: "Success", data: result })
-            }).catch((error) => {
-                return res.status(500).send(error)
+        // Id product
+        const id = req.params.id
+        
+        return usersModel.update(req, id)
+        .then((result) => {
+            // console.log(result[0].img_profile);
+            for (let i = 0; i < result.length; i++) {
+                unlink(`public/uploads/images/${result[i].img_profile}`, (err) => {
+                    if (err) throw err;
+                });
+            }
+            return res.send({
+                Message: `Successfully update data id=${id}`
             })
+        })
+        // Error handling
+        .catch(error => {
+            return res.status(400).send({
+                Status: 400,
+                Message: `${error}`
+            })
+        })
     },
+
     remove: (req, res) => {
         return usersModel.remove(req.params.id)
             .then((result) => {
-                console.log(result);
+                // console.log(result);
                 // console.log(result.rows[0].img_profile);
                 for (let i = 0; i < result.length; i++) {
-                    console.log(`public/uploads/images/${result[i].img_profile}`);
+                    // console.log(`public/uploads/images/${result[i].img_profile}`);
                     unlink(`public/uploads/images/${result[i].img_profile}`, (err) => {
                         if (err) throw err;
                     });
