@@ -11,6 +11,6 @@ router.get('/', (req, res) => {
 
 router.use("/auth", authRoute);
 router.use('/users', usersRoute);
-router.use('/users/portfolio', usersPortfolio)
+router.use('/users-portfolio', usersPortfolio)
 
 module.exports = router;

@@ -14,7 +14,7 @@ const usersPortfolioModel = {
                         return reject(err.message)
                     } else {
                         for (let index = 0; index < img_portfolio.length; index++) {
-                            console.log(img_portfolio[index]);
+                            // console.log(img_portfolio[index]);
                             db.query(`INSERT INTO portfolio_images (id_img, id_portfolio, project_name, filename) VALUES($1, $2 ,$3 , $4)`, [uuidv4(), result.rows[0].id_portfolio, project_name, img_portfolio[index].filename])
                         }
                         return resolve({ project_name, link_repository, images: img_portfolio })
@@ -27,7 +27,6 @@ const usersPortfolioModel = {
     // READ
     query: (search, sortBy, limit, offset) => {
         let orderQuery = `ORDER BY project_name ${sortBy} LIMIT ${limit} OFFSET ${offset}`
-
         if (!search) {
             return orderQuery
         } else if (search) {
@@ -38,6 +37,7 @@ const usersPortfolioModel = {
     },
 
     whereClause: (search) => {
+        // console.log("whereclause", { search, category })
         if (search) {
             return `WHERE project_name ILIKE '%${search}%'`
         } else {
@@ -46,19 +46,19 @@ const usersPortfolioModel = {
     },
 
     orderAndGroupClause: (sortBy, limit, offset) => {
-        return `GROUP BY p.id ORDER BY price ${sortBy} LIMIT ${limit} OFFSET ${offset}`
+        return `GROUP BY p.id_portfolio ORDER BY project_name ${sortBy} LIMIT ${limit} OFFSET ${offset}`
     },
 
     read: function (search, sortBy = 'ASC', limit = 25, offset = 0) {
-        // console.log("where", this.whereClause(search, category))
+        // console.log("where", this.whereClause(search))
         // console.log("order", this.orderAndGroupClause(sortBy, limit, offset))
         return new Promise((resolve, reject) => {
             db.query(
                 `SELECT 
-                  p.id, p.title, p.price, p.category,
+                  p.id_portfolio, p.id_user, p.project_name, p.link_repository,
                   json_agg(row_to_json(pi)) images 
-                FROM products p
-                INNER JOIN products_images pi ON p.id = pi.id_product
+                FROM portfolio p
+                INNER JOIN portfolio_images pi ON p.id_portfolio = pi.id_portfolio
                 ${this.whereClause(search)}
                 ${this.orderAndGroupClause(sortBy, limit, offset)}
                 `,
@@ -66,6 +66,7 @@ const usersPortfolioModel = {
                     if (err) {
                         return reject(err.message)
                     } else {
+                        console.log(result);
                         return resolve(result.rows)
                     }
                 }
@@ -89,40 +90,51 @@ const usersPortfolioModel = {
     },
 
     // UPDATE
-    update: ({ id, title, img, price, category, file }) => {
-        return new Promise((resolve, reject) => {
-            db.query(`SELECT * FROM products WHERE id='${id}'`, (err, result) => {
-                if (err) {
-                    return reject(err.message);
+    // ({ id, productname, price, category, description, size, delivery, file })
+    update: ({ id_portfolio, project_name, link_repository, img_portfolio }) => {
+        // console.log(id_portfolio);
+        return new Promise((success, failed) => {
+            db.query(`SELECT * FROM portfolio WHERE id_portfolio='${id_portfolio}'`, (error, dataRes) => {
+                if (error) {
+                    return failed(error.message)
                 } else {
-                    db.query(
-                        `UPDATE products SET title='${title || result.rows[0].title}', img='${img || result.rows[0].img}',price='${price || result.rows[0].price}', category='${category || result.rows[0].category}' WHERE id='${id}'`,
-                        (err, result) => {
-                            if (err) {
-                                return reject(err.message)
+                    if (dataRes.rows.length == 0) {
+                        return failed('Id not found!')
+                    } else {
+                        db.query(`UPDATE portfolio SET project_name='${project_name || dataRes.rows[0].project_name}', link_repository='${link_repository || dataRes.rows[0].link_repository}' WHERE id_portfolio='${id_portfolio}'`, (error) => {
+                            if (error) {
+                                return failed(error.message)
                             } else {
-                                if (file.length <= 0) return resolve({ id, title, price, category })
-
-                                db.query(`SELECT id_image, filename FROM products_images WHERE id_product='${id}'`, (errProductImages, productImages) => {
-                                    // ERROR HANDLING
-                                    if (errProductImages) {
-                                        return reject({ message: errProductImages.message });
-                                    } else if (productImages.rows.length < file.length) {
-                                        return reject("sorry:(...for now you can only upload images according to the previous number or lower");
-                                    } else {
-                                        for (let indexNew = 0; indexNew < file.length; indexNew++) {
-                                            db.query(`UPDATE products_images SET filename=$1 WHERE id_image=$2`, [file[indexNew].filename, productImages.rows[indexNew].id_image], (err, result) => {
-                                                if (err) return reject({ message: "Failed delete image!" })
-                                                return resolve({ id, title, price, category, oldImages: productImages.rows, images: file })
-
+                                if (img_portfolio.length == 0) {
+                                    db.query(`UPDATE portfolio_images SET project_name=$1 WHERE id_portfolio=$2`, [project_name || dataRes.rows[0].project_name, id_portfolio], (err) => {
+                                        if (err) {
+                                            return failed(err.message)
+                                        }
+                                    })
+                                    return success({ id_portfolio, project_name, link_repository })
+                                }
+                                db.query(`SELECT id_img,filename FROM portfolio_images WHERE id_portfolio='${id_portfolio}'`, (errOld, resultOld) => {
+                                    if (errOld) return failed(error.message)
+                                    // console.log(resultOld.rows.length);
+                                    for (let i = 0; i < img_portfolio.length; i++) {
+                                        if (i >= resultOld.rows.length) {
+                                            // console.log(`file ${i}`);
+                                            db.query(`INSERT INTO portfolio_images (id_img, id_portfolio, project_name, filename) VALUES ($1, $2, $3, $4)`, [uuidv4(), id_portfolio, project_name || dataRes.rows[0].project_name, img_portfolio[i].filename], (err) => {
+                                                if (err) return failed(err.message)
+                                            })
+                                        } else {
+                                            // console.log(`file ${i}`);
+                                            db.query(`UPDATE portfolio_images SET project_name=$1, filename=$2 WHERE id_img=$3`, [project_name || dataRes.rows[0].project_name, img_portfolio[i].filename, resultOld.rows[i].id_img], (err) => {
+                                                if (err) return failed(err.message)
+                                                // console.log(resultOld.rows);
+                                                return success({ id_portfolio, project_name, link_repository, oldImages: resultOld.rows, portfolio_image: img_portfolio })
                                             })
                                         }
                                     }
                                 })
-                                // return resolve({ id, title, img, price, category })
                             }
-                        }
-                    )
+                        })
+                    }
                 }
             })
         })

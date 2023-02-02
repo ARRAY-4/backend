@@ -18,9 +18,9 @@ const usersPortfolioController = {
     },
     read: (req, res) => {
         // console.log(req.query);
-        let { search, category, sortBy, page, limit } = req.query
+        let { search, sortBy, page, limit } = req.query
         let offset = Pagination.buildOffset(page, limit)
-        return usersPortfolioModel.read(search, category, sortBy, limit, offset)
+        return usersPortfolioModel.read(search, sortBy, limit, offset)
             .then((result) => {
                 return res.status(201).send({ message: "succes", data: result })
                 // return formResponse(200, "success", result, res)
@@ -45,17 +45,19 @@ const usersPortfolioController = {
     update: (req, res) => {
         const request = {
             ...req.body,
-            id: req.params.id,
-            file: req.files
+            id_portfolio: req.params.id,
+            img_portfolio: req.files
         }
-        console.log(request);
+        // console.log(request);
         return usersPortfolioModel.update(request)
             .then((result) => {
+                // console.log(result[0].img_profile);
                 if (typeof result.oldImages != "undefined") {
-                    for (let index = 0; index < result.oldImages.length; index++) {
-                        console.log(result.oldImages[index].filename)
-                        unlink(`public/uploads/images/${result.oldImages[index].filename}`, (err) => {
-                            console.log(`successfully deleted ${result.oldImages[index].filename}`)
+                    for (let i = 0; i < result.oldImages.length; i++) {
+                        // console.log(result.oldImages[i].filename)
+                        unlink(`public/uploads/images/${result.oldImages[i].filename}`, (err) => {
+                            if (err) throw err;
+                            // console.log(`successfully deleted ${result.oldImages[i].filename}`)
                         });
                     }
                 }
