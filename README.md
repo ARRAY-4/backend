@@ -14,7 +14,7 @@ To get the Node server running locally:
 
 ## DB Structure
 
-Open [schema](https://drawsql.app/dea/diagrams/tickitz)
+Open [schema](https://drawsql.app/teams/array/diagrams/copy-of-auth-db)
 
 ## Folder Structure
 
