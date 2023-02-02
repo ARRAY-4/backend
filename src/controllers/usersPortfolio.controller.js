@@ -33,13 +33,14 @@ const usersPortfolioController = {
         return usersPortfolioModel.readDetail(req.params.id)
             .then((result) => {
                 if (result != null) {
-                    return formResponse(201, "success", result, res)
-                    // return res.status(200).send({ message: "Success", data: result })
+                    // return formResponse(201, "success", result, res)
+                    return res.status(201).send({ message: "Success", data: result })
                 } else {
                     return res.status(404).send({ message: "Sorry data not found! Please check your input ID!" })
                 }
             }).catch((error) => {
-                return formResponse(500, error)
+                // return formResponse(500, error)
+                return res.status(500).send({ message: error })
             })
     },
     update: (req, res) => {

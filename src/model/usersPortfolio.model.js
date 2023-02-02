@@ -77,7 +77,14 @@ const usersPortfolioModel = {
     readDetail: (id) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `SELECT * from portfolio WHERE id_portfolio='${id}'`,
+                `SELECT 
+                  p.id_portfolio, p.id_user, p.project_name, p.link_repository,
+                  json_agg(row_to_json(pi)) images 
+                FROM portfolio p
+                INNER JOIN portfolio_images pi ON p.id_portfolio = pi.id_portfolio 
+                AND p.id_portfolio='${id}'
+                GROUP BY p.id_portfolio`,
+                // `SELECT * from portfolio WHERE id_portfolio='${id}'`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
