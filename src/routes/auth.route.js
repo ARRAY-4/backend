@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express();
 
-// const validationUser = require("../middleware/validation-user");
+const validationUser = require("../middleware/validation-user");
 const validationCompany = require("../middleware/validation-company");
 //import controller
 const authController = require("../controllers/auth.controller.js");
@@ -9,7 +9,7 @@ const authController = require("../controllers/auth.controller.js");
 router.post("/login-user", authController.loginuser);
 router.post("/login-company", authController.logincompany);
 
-router.post("/regis-user", authController.registeruser);
+router.post("/regis-user", validationUser.users, authController.registeruser);
 router.post(
     "/regis-company",
     validationCompany,
