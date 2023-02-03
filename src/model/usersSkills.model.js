@@ -50,10 +50,17 @@ const usersSkillsModel = {
         })
     },
 
-    readDetail: (id_skill) => {
+    readDetail: (id_user) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `SELECT * from user_skills WHERE id_skill='${id_skill}'`,
+                `SELECT 
+                p.id_user, p.full_name, p.email,
+                json_agg(row_to_json(pi)) skills
+                FROM users p
+                INNER JOIN user_skills pi ON p.id_user = pi.id_user
+                AND p.id_user = '${id_user}'
+                GROUP BY p.id_user`,
+                // `SELECT * from user_skills WHERE id_user='${id_user}'`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
