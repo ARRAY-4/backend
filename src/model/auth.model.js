@@ -90,7 +90,7 @@ const authModel = {
     return new Promise((resolve, reject) => {
       db.query(
         //postgresql
-        `insert into company (id_company,user_company,email,password,name_company,phone,field_company) values ($1,$2,$3,$4,$5,$6,$7)`,
+        `insert into company (id_company,admin_company,email,password,name_company,phone,field_company) values ($1,$2,$3,$4,$5,$6,$7)`,
         //jika mysql menggukanan='?' dan urutannya wajib urut
         [uuidv4(), name, email, password, company, phone, field],
         (err, result) => {
