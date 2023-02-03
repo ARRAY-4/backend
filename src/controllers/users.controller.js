@@ -17,9 +17,9 @@ const usersController = {
             })
     },
     read: (req, res) => {
-        let { search, name, sortBy, page, limit } = req.query
+        let { search, employment_type, sortBy, page, limit } = req.query
         let offset = Pagination.buildOffset(page, limit)
-        return usersModel.read(search, name, sortBy, limit, offset)
+        return usersModel.read(search, employment_type, sortBy, limit, offset)
             .then((result) => {
                 return res.status(200).send({ message: "Success", data: result })
             }).catch((error) => {
