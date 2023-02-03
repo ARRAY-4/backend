@@ -6,8 +6,8 @@ This is a ExpressJs-based API for [frontend project](https://github.com/ARRAY-4/
 
 To get the Node server running locally:
 
-* Clone this repo with `git clone https://github.com/NamaTeam/tickitz-backend.git`
-* `cd tickitz-backend`
+* Clone this repo with `git clone https://github.com/ARRAY-4/backend.git`
+* `cd backend`
 * `npm install` to install all required dependencies
 * Create a `.env` file and reference the `.env.example` file
 * `node index.js` to start the local server
@@ -17,92 +17,73 @@ To get the Node server running locally:
 Open [schema](https://drawsql.app/teams/array/diagrams/copy-of-auth-db)
 
 ## Folder Structure
-
+├── helper
+    ├── connection.js
+    ├── index.js
+    ├── pagination.js
+    ├── response.js
+├── src
     ├── controllers                    
-    │   ├── Auth.js              
-    │   ├── Cinemas.js              
-    │   ├── Movies.js             
-    │   ├── Order.js
-    |   ├── Schedule.js
-    |   └── User.js
-    ├── helpers
-    │   ├── connect_db.js
-    │   ├── fromResponse.js              
-    │   ├── fromUpload.js             
-    │   ├── queryAuth.js
-    |   ├── queryCinemas.js
-    |   ├── queryMovies.js
-    |   ├── queryOrder.js
-    |   ├── querySchedule.js
-    |   ├── queryUser.js
-    |   └── verifyToken.js
+    │   ├── auth.controller.js            
+    │   ├── users.controller.js            
+    │   ├── usersExperiences.controller.js           
+    │   ├── usersPortfolio.controller.js
+    |   ├── usersSkills.controller.js
+    ├── middleware
+    │   ├── checkDuplicate.js
+    │   ├── formUpload.js            
+    │   ├── validation-company.js          
+    │   ├── validation-user.js
     ├── models
-    │   ├── Auth.js
-    │   ├── Cinemas.js
-    │   ├── Movies.js
-    │   ├── Order.js
-    |   ├── Schedule.js
-    |   └── User.js
+    │   ├── auth.model.js
+    │   ├── users.model.js
+    │   ├── usersExperiences.model.js
+    │   ├── usersPortfolio.model.js
+    |   ├── usersSkills.model.js
     ├── routes
-    │   ├── Auth.js              
-    │   ├── Cinemas.js    
-    │   ├── index.js
-    │   ├── Movies.js             
-    │   ├── Order.js
-    |   ├── Schedule.js
-    |   └── User.js
-    └── index.js
+    │   ├── auth.route.js           
+    │   ├── index.js  
+    │   ├── users.route.js
+    │   ├── usersExperiences.route.js          
+    │   ├── usersPortfolio.route.js
+    |   ├── usersSkills.route.js
+├── index.js
     
 ## Endpoints
-movie endpoint
+users endpoint
 
-    GET      /movies
-    GET      /movies/date?start=2021-05-06
-    GET      /movies/month?month=05
-    GET      /movies/upcoming
-    GET      /movies/1
-    POST     /movies
-    PATCH    /movies/1
-    DEL      /movies/1
+    GET      /api/users
+    GET      /api/users/:id
+    PATCH    /api/users/:id
+    DEL      /api/users/:id
 
-cinema endpoint
+portfolio endpoint
 
-    GET      /cinemas
-    GET      /cinemas/all
-    POST     /cinemas/list/4
-    POST     /cinemas
-    PATCH    /cinemas/1
-    DEL      /cinemas/1
+    GET      /api/users-portfolio
+    GET      /api/users-portfolio/:id
+    POST     /api/users-portfolio
+    PATCH    /api/users-portfolio/:id
+    DEL      /api/users-portfolio/:id
     
-schedule endpoint
+experiences endpoint
 
-    GET      /schedules/1
-    GET      /schedules/movies/1
-    GET      /schedules/cinemas/1
-    POST     /schedules
-    PATCH    /schedules/1
-    DEL      /schedules/1
+    GET      /api/users-experiences
+    GET      /api/users-experiences/:id
+    POST     /api/users-experiences
+    PATCH    /api/users-experiences/:id
+    DEL      /api/users-experiences/:id
     
-order endpoint
+user_skills endpoint
 
-    GET      /orders/history/1
-    GET      /orders/schedule/1
-    GET      /orders/1
-    POST     /orders/1
-    PATCH    /orders/1
-    DEL      /orders/1
-    
-user endpoint
-
-    GET      /users
-    GET      /users/1
-    POST     /users
-    PATCH    /users/1
-    DEL      /users/1    
+    GET      /api/users-skills
+    GET      /api/users-skills/:id
+    POST     /api/users-skills
+    PATCH    /api/users-skills/:id
+    DEL      /api/users-skills/:id
 
 when put under a domain with `prefix`, it would look like:
 
-    https://www.example.com/tickitz/api/users
+    https://www.example.com/api/users
  
-Documentation : [Postman Collection](https://documenter.getpostman.com/view/13687762/TzeTJp9W)
+Documentation : [Postman Collection](https://documenter.getpostman.com/view/24646334/2s935kP673)
  
