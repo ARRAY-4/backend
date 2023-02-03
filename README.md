@@ -17,37 +17,35 @@ To get the Node server running locally:
 Open [schema](https://drawsql.app/teams/array/diagrams/copy-of-auth-db)
 
 ## Folder Structure
-├── helper
-    ├── connection.js
-    ├── index.js
-    ├── pagination.js
-    ├── response.js
-├── src
-    ├── controllers                    
-    │   ├── auth.controller.js            
-    │   ├── users.controller.js            
-    │   ├── usersExperiences.controller.js           
-    │   ├── usersPortfolio.controller.js
-    |   ├── usersSkills.controller.js
-    ├── middleware
-    │   ├── checkDuplicate.js
-    │   ├── formUpload.js            
-    │   ├── validation-company.js          
-    │   ├── validation-user.js
-    ├── models
-    │   ├── auth.model.js
-    │   ├── users.model.js
-    │   ├── usersExperiences.model.js
-    │   ├── usersPortfolio.model.js
-    |   ├── usersSkills.model.js
-    ├── routes
-    │   ├── auth.route.js           
-    │   ├── index.js  
-    │   ├── users.route.js
-    │   ├── usersExperiences.route.js          
-    │   ├── usersPortfolio.route.js
-    |   ├── usersSkills.route.js
-├── index.js
+
+     ┣ 📂public
+     ┃ ┗ 📂uploads
+     ┃ ┃ ┗ 📂images
+     ┣ 📂src
+     ┃ ┣ 📂controllers
+     ┃ ┃ ┣ 📜auth.controller.js
+     ┃ ┃ ┣ 📜users.controller.js
+     ┃ ┃ ┣ 📜usersExperiences.controller.js
+     ┃ ┃ ┣ 📜usersPortfolio.controller.js
+     ┃ ┃ ┗ 📜usersSkills.controller.js
+     ┃ ┣ 📂middleware
+     ┃ ┃ ┣ 📜checkDuplicate.js
+     ┃ ┃ ┣ 📜formUpload.js
+     ┃ ┃ ┣ 📜validation-company.js
+     ┃ ┃ ┗ 📜validation-user.js
+     ┃ ┣ 📂model
+     ┃ ┃ ┣ 📜auth.model.js
+     ┃ ┃ ┣ 📜users.model.js
+     ┃ ┃ ┣ 📜usersExperiences.model.js
+     ┃ ┃ ┣ 📜usersPortfolio.model.js
+     ┃ ┃ ┗ 📜usersSkills.model.js
+     ┃ ┗ 📂routes
+     ┃ ┃ ┣ 📜auth.route.js
+     ┃ ┃ ┣ 📜index.js
+     ┃ ┃ ┣ 📜users.route.js
+     ┃ ┃ ┣ 📜usersExperiences.route.js
+     ┃ ┃ ┣ 📜usersPortfolio.route.js
+     ┃ ┃ ┗ 📜usersSkills.route.js
     
 ## Endpoints
 users endpoint
