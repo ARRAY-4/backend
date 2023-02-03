@@ -1,3 +1,4 @@
+// RYAN
 // // express validator
 // const { body, check, validationResult } = require('express-validator')
 // const checkDuplicate = require('./checkDuplicate')
@@ -52,7 +53,7 @@
 
 // module.exports = { users }
 
-
+// RAYNO
 const { check, validationResult } = require("express-validator");
 
 // USERS VALIDATION
