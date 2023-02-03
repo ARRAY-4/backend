@@ -14,9 +14,4 @@ router.post(
     "/regis-company",
     validationCompany,
     authController.registercompany
-);
-
-//contoh menampilkan data
-//router.get("/", (req, res) => {return res.send(`hallo`)});
-
-module.exports = router;
+)
