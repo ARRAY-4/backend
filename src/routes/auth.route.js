@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express();
 
-const validationUser = require("../validator/validation-user");
-const validationCompany = require("../validator/validation-company");
+const validationUser = require("../middleware/validation-user");
+const validationCompany = require("../middleware/validation-company");
 //import controller
 const authController = require("../controllers/auth.controller");
 

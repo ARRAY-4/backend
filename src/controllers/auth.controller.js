@@ -82,7 +82,7 @@ const authController = {
           password: hash,
           phone: req.body.phone,
         };
-        console.log(request);
+
         return authModel
           .registeruser(request)
           .then((result) => {
