@@ -2,7 +2,7 @@ const express = require("express");
 const router = express();
 // import controller
 const companyController = require("../controllers/company.controller");
-const formUpload = require("../../helper/formUpload");
+const formUpload = require("../middleware/formUpload");
 
 router.get("/", companyController.get);
 router.get("/:id", companyController.detail);

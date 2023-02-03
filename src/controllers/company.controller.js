@@ -71,7 +71,7 @@ const companyController = {
       .then((result) => {
         if (result[0].img_company != null) {
           for (let i = 0; i < result.length; i++) {
-            unlink(`public/upload/images/${result[i].img_company}`, (err) => {
+            unlink(`public/uploads/images/${result[i].img_company}`, (err) => {
               if (err) throw err;
             });
           }
@@ -92,7 +92,7 @@ const companyController = {
       .remove(req.params.id)
       .then((result) => {
         for (let i = 0; i < result.length; i++) {
-          unlink(`public/upload/images/${result[i].img_company}`, (err) => {
+          unlink(`public/uploads/images/${result[i].img_company}`, (err) => {
             if (err) throw err;
           });
         }
