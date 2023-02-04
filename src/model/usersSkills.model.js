@@ -54,7 +54,7 @@ const usersSkillsModel = {
         return new Promise((resolve, reject) => {
             db.query(
                 `SELECT 
-                p.id_user, p.full_name, p.email,
+                p.id_user, p.full_name, p.job_desk, p.employment_type,
                 json_agg(row_to_json(pi)) skills
                 FROM users p
                 INNER JOIN user_skills pi ON p.id_user = pi.id_user
