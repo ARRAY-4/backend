@@ -22,9 +22,10 @@ const authController = {
               {
                 token,
                 user: {
-                  id: result.id_users,
+                  id_user: result.id_user,
                   username: result.full_name,
                   image: result.img_profile,
+                  role: result.role,
                 },
               },
               res
@@ -56,6 +57,7 @@ const authController = {
                   id: result.id_company,
                   username: result.user_company,
                   image: result.img_company,
+                  role: result.role,
                 },
               },
               res
@@ -105,7 +107,7 @@ const authController = {
         return res.status(500).send({ message: err.message });
       } else {
         const request = {
-          name: req.body.name,
+          admin_company: req.body.admin_company,
           email: req.body.email,
           company: req.body.company,
           field: req.body.field,
