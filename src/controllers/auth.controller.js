@@ -112,6 +112,7 @@ const authController = {
           phone: req.body.phone,
           password: hash,
         };
+        console.log(request);
 
         return authModel
           .registercompany(request)
