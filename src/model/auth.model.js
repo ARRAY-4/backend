@@ -28,12 +28,13 @@ const authModel = {
                   return resolve(result.rows[0]);
                 }
               }
-            );
+            )
           }
         }
-      });
-    });
+      })
+    })
   },
+
   logincompany: ({ email, password }) => {
     return new Promise((resolve, reject) => {
       db.query(

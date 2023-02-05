@@ -47,14 +47,14 @@ const usersController = {
         
         return usersModel.update(req, id)
         .then((result) => {
-            console.log(result[0].img_profile);
-            if (result[0].img_profile != null){
-                for (let i = 0; i < result.length; i++) {
-                    unlink(`public/uploads/images/${result[i].img_profile}`, (err) => {
-                        if (err) throw err;
-                    });
-                }
-            }
+            // console.log(result[0].img_profile);
+            // if (result[0].img_profile != null){
+            //     for (let i = 0; i < result.length; i++) {
+            //         unlink(`public/uploads/images/${result[i].img_profile}`, (err) => {
+            //             if (err) throw err;
+            //         });
+            //     }
+            // }
             return res.status(200).send({ message: `Successfully update data id=${id}`})
         })
         // Error handling

@@ -53,7 +53,7 @@ const authController = {
               "success",
               {
                 token,
-                company: {
+                user: {
                   id: result.id_company,
                   username: result.user_company,
                   image: result.img_company,
