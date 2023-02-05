@@ -7,6 +7,7 @@ const usersPortfolio = require('./usersPortfolio.route')
 const usersExperiences = require('./usersExperiences.route')
 const usersSkills = require('./usersSkills.route.js')
 const companyRoute = require("./company.route");
+const hireRoute = require("./hire.route");
 
 router.get('/', (req, res) => {
     return res.send('Backend for Hiring Job App - ARRAY')
@@ -18,5 +19,5 @@ router.use('/users-portfolio', usersPortfolio)
 router.use('/users-experiences', usersExperiences)
 router.use('/users-skills', usersSkills)
 router.use("/company", companyRoute);
-
+router.use("/hire", hireRoute);
 module.exports = router;

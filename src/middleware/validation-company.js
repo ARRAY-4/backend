@@ -5,7 +5,7 @@ const { check, validationResult } = require("express-validator");
 
 // USERS VALIDATION
 const rulesAuth = [
-  check("name")
+  check("admin_company")
     .notEmpty()
     .withMessage("user company cannot empty")
     .trim()

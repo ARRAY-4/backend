@@ -18,7 +18,7 @@ const companyModel = {
     }
   },
 
-  get: function (company, field, sortBy = "ASC", limit = 5, offset = 0) {
+  get: function (company, field, sortBy = "ASC", limit = 25, offset = 0) {
     return new Promise((resolve, reject) => {
       db.query(
         `select * from company ${this.query(
@@ -48,6 +48,8 @@ const companyModel = {
         (err, result) => {
           if (err) {
             return reject(err.message);
+          } else if (result.rows.length < 1) {
+            return reject("Id not found!");
           } else {
             return resolve(result.rows[0]);
           }
@@ -173,6 +175,8 @@ const companyModel = {
         (err, result) => {
           if (err) {
             return reject(err.message);
+          } else if (result.rows.length < 1) {
+            return reject("Id not found!");
           } else {
             return resolve(result.rows);
           }
