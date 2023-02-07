@@ -5,11 +5,11 @@ const { check, validationResult } = require("express-validator");
 
 // USERS VALIDATION
 const rulesAuth = [
-  check("admin_company")
-    .notEmpty()
-    .withMessage("user company cannot empty")
-    .trim()
-    .escape(),
+  // check("admin_company")
+  //   .notEmpty()
+  //   .withMessage("user company cannot empty")
+  //   .trim()
+  //   .escape(),
 
   check("email")
     .notEmpty()
@@ -43,15 +43,15 @@ const rulesAuth = [
     .notEmpty()
     .withMessage("password cannot empty")
 
-    .isStrongPassword({
-      minLength: 8,
-      minUppercase: 1,
-      minNumbers: 1,
-      minSymbols: 1,
-    })
-    .withMessage("Password must Strong and min 8 char")
-    .trim()
-    .escape(),
+    // .isStrongPassword({
+    //   minLength: 8,
+    //   minUppercase: 1,
+    //   minNumbers: 1,
+    //   minSymbols: 1,
+    // })
+    // .withMessage("Password must Strong and min 8 char")
+    // .trim()
+    // .escape(),
 ];
 // RESPONSE AND CONDITION
 const validation = [
