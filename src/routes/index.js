@@ -19,5 +19,5 @@ router.use('/users-portfolio', usersPortfolio)
 router.use('/users-experiences', usersExperiences)
 router.use('/users-skills', usersSkills)
 router.use("/company", companyRoute);
-router.use("/hire", hireRoute);
+router.use("/hiring", hireRoute);
 module.exports = router;

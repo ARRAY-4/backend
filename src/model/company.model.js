@@ -21,7 +21,7 @@ const companyModel = {
   get: function (company, field, sortBy = "ASC", limit = 25, offset = 0) {
     return new Promise((resolve, reject) => {
       db.query(
-        `select * from company ${this.query(
+        `select * from hirejob_company ${this.query(
           company,
           field,
           sortBy,
@@ -44,7 +44,7 @@ const companyModel = {
   detail: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `select * from company where id_company='${id}'`,
+        `select * from hirejob_company where id_company='${id}'`,
         (err, result) => {
           if (err) {
             return reject(err.message);
@@ -73,7 +73,7 @@ const companyModel = {
     //kenapa digunakan destructuring
     return new Promise((resolve, reject) => {
       db.query(
-        `insert into company values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) `, //jika varchar perlu string ''
+        `insert into hirejob_company values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) `, //jika varchar perlu string ''
         [
           uuidv4(),
           admin_company,
@@ -126,7 +126,7 @@ const companyModel = {
   }) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM company WHERE id_company='${id}'`,
+        `SELECT * FROM hirejob_company WHERE id_company='${id}'`,
         (err, result) => {
           if (err) {
             return reject(err.message);
@@ -134,21 +134,18 @@ const companyModel = {
             return reject("Id not found!");
           } else {
             db.query(
-              `UPDATE company SET 
-                  admin_company='${
-                    admin_company || result.rows[0].admin_company
-                  }', 
+              `UPDATE hirejob_company SET 
+                  admin_company='${admin_company || result.rows[0].admin_company
+              }', 
                   email='${email || result.rows[0].email}', 
                   password='${password || result.rows[0].password}', 
                   name_company='${name_company || result.rows[0].name_company}',
-                  img_company='${
-                    result.rows[0].img_company == undefined
-                      ? img_company
-                      : img_company || result.rows[0].img_company
-                  }', 
-                  field_company='${
-                    field_company || result.rows[0].field_company
-                  }',
+                  img_company='${result.rows[0].img_company == undefined
+                ? img_company
+                : img_company || result.rows[0].img_company
+              }', 
+                  field_company='${field_company || result.rows[0].field_company
+              }',
                   phone='${phone || result.rows[0].phone}', 
                   address='${address || result.rows[0].address}', 
                   description='${description || result.rows[0].description}', 
@@ -171,7 +168,7 @@ const companyModel = {
   remove: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `DELETE from company WHERE id_company='${id}' returning img_company`,
+        `DELETE from hirejob_company WHERE id_company='${id}' returning img_company`,
         (err, result) => {
           if (err) {
             return reject(err.message);

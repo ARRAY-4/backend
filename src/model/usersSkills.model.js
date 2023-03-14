@@ -7,7 +7,7 @@ const usersSkillsModel = {
     create: ({ skill_name, level }) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO user_skills (id_skill, skill_name, level) VALUES ('${uuidv4()}','${skill_name}','${level}')`,
+                `INSERT INTO hirejob_user_skills (id_skill, skill_name, level) VALUES ('${uuidv4()}','${skill_name}','${level}')`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
@@ -37,7 +37,7 @@ const usersSkillsModel = {
     read: function (search, skill_name, sortBy = 'ASC', limit = 25, offset = 0) {
         return new Promise((resolve, reject) => {
             db.query(
-                `SELECT * from user_skills ${this.query(search, skill_name, sortBy, limit, offset)}`,
+                `SELECT * from hirejob_user_skills ${this.query(search, skill_name, sortBy, limit, offset)}`,
                 (err, result) => {
                     // console.log(result);
                     if (err) {
@@ -57,10 +57,10 @@ const usersSkillsModel = {
                 p.id_user, p.full_name, p.job_desk, p.employment_type,
                 json_agg(row_to_json(pi)) skills
                 FROM users p
-                INNER JOIN user_skills pi ON p.id_user = pi.id_user
+                INNER JOIN hirejob_user_skills pi ON p.id_user = pi.id_user
                 AND p.id_user = '${id_user}'
                 GROUP BY p.id_user`,
-                // `SELECT * from user_skills WHERE id_user='${id_user}'`,
+                // `SELECT * from hirejob_user_skills WHERE id_user='${id_user}'`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
@@ -74,13 +74,13 @@ const usersSkillsModel = {
 
     update: ({ id, skill_name, level }) => {
         return new Promise((resolve, reject) => {
-            db.query(`SELECT * FROM user_skills WHERE id_skill='${id}'`, (err, result) => {
+            db.query(`SELECT * FROM hirejob_user_skills WHERE id_skill='${id}'`, (err, result) => {
                 // console.log(result);
                 if (err) {
                     return reject(err.message);
                 } else {
                     db.query(
-                        `UPDATE user_skills SET skill_name='${skill_name || result.rows[0].skill_name}', level='${level || result.rows[0].level}' WHERE id_skill='${id}'`,
+                        `UPDATE hirejob_user_skills SET skill_name='${skill_name || result.rows[0].skill_name}', level='${level || result.rows[0].level}' WHERE id_skill='${id}'`,
                         (err, result) => {
                             if (err) {
                                 return reject(err.message)
@@ -99,9 +99,9 @@ const usersSkillsModel = {
     remove: (id_skill) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `DELETE from user_skills WHERE id_skill='${id_skill}'`,
+                `DELETE from hirejob_user_skills WHERE id_skill='${id_skill}'`,
                 (err, result) => {
-                    console.log(result);
+                    // console.log(result);
                     if (err) {
                         return reject(err.message)
                     } else {
