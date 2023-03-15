@@ -4,10 +4,10 @@ const { v4: uuidv4 } = require('uuid');
 
 const usersSkillsModel = {
     // CREATE
-    create: ({ skill_name, level }) => {
+    create: ({ id_user, skill_name, level }) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO hirejob_user_skills (id_skill, skill_name, level) VALUES ('${uuidv4()}','${skill_name}','${level}')`,
+                `INSERT INTO hirejob_user_skills (id_skill, id_user, skill_name, level) VALUES ('${uuidv4()}', '${id_user}', '${skill_name}','${level}')`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
@@ -56,7 +56,7 @@ const usersSkillsModel = {
                 `SELECT 
                 p.id_user, p.full_name, p.job_desk, p.employment_type,
                 json_agg(row_to_json(pi)) skills
-                FROM users p
+                FROM hirejob_users p
                 INNER JOIN hirejob_user_skills pi ON p.id_user = pi.id_user
                 AND p.id_user = '${id_user}'
                 GROUP BY p.id_user`,

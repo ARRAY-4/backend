@@ -4,11 +4,11 @@ const { v4: uuidv4 } = require('uuid');
 
 const usersPortfolioModel = {
     // CREATE
-    create: ({ project_name, link_repository, img_portfolio }) => {
-        // console.log({ project_name, link_repository, img_portfolio });
+    create: ({ id_user, project_name, link_repository, img_portfolio }) => {
+        // console.log({ id_user, project_name, link_repository, img_portfolio });
         return new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO hirejob_portfolio (id_portfolio, project_name, link_repository) VALUES ('${uuidv4()}','${project_name}','${link_repository}') RETURNING id_portfolio`,
+                `INSERT INTO hirejob_portfolio (id_portfolio, id_user, project_name, link_repository) VALUES ('${uuidv4()}', '${id_user}', '${project_name}','${link_repository}') RETURNING id_portfolio`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
@@ -17,7 +17,7 @@ const usersPortfolioModel = {
                             // console.log(img_portfolio[index]);
                             db.query(`INSERT INTO hirejob_portfolio_images (id_img, id_portfolio, project_name, filename) VALUES($1, $2 ,$3 , $4)`, [uuidv4(), result.rows[0].id_portfolio, project_name, img_portfolio[index].filename])
                         }
-                        return resolve({ project_name, link_repository, images: img_portfolio })
+                        return resolve({ id_user, project_name, link_repository, images: img_portfolio })
                     }
                 }
             )
