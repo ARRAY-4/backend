@@ -7,7 +7,7 @@ const hireModel = {
   detail: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `select * from hiring where id_company='${id}'`,
+        `select * from hirejob_hiring where id_company='${id}'`,
         (err, result) => {
           if (err) {
             return reject(err.message);
@@ -23,13 +23,13 @@ const hireModel = {
   add: ({ id_company, id_user, subject, message }) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `select id_user,full_name from users where id_user = '${id_user}'`,
+        `select id_user,full_name from hirejob_users where id_user = '${id_user}'`,
         (err, res) => {
           if (err) {
             return reject(err.message);
           } else {
             db.query(
-              `insert into hiring (id_hiring,id_company,id_user,name_user,subject,message)
+              `insert into hirejob_hiring (id_hiring,id_company,id_user,name_user,subject,message)
               values ($1,$2,$3,$4,$5,$6)`,
               [
                 uuidv4(),
@@ -60,7 +60,7 @@ const hireModel = {
   remove: (id_hiring) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `DELETE from hiring WHERE id_hiring='${id_hiring}'`,
+        `DELETE from hirejob_hiring WHERE id_hiring='${id_hiring}'`,
         (err, result) => {
           if (err) {
             return reject(err.message);

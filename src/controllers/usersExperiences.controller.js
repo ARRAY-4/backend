@@ -8,7 +8,7 @@ const usersExperiencesController = {
         const request = {
             ...req.body,
         }
-        console.log(request);
+        // console.log(request);
         return usersExperiencesModel.create(request)
             .then((result) => {
                 return res.status(201).send({ message: "Success", data: result })

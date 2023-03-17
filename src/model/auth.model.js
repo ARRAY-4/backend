@@ -8,7 +8,7 @@ const bcrypt = require("bcrypt");
 const authModel = {
   loginuser: ({ email, password }) => {
     return new Promise((resolve, reject) => {
-      db.query("select * from users where email=$1", [email], (err, result) => {
+      db.query("select * from hirejob_users where email=$1", [email], (err, result) => {
         if (err) {
           return reject(err.message);
         } else {
@@ -38,7 +38,7 @@ const authModel = {
   logincompany: ({ email, password }) => {
     return new Promise((resolve, reject) => {
       db.query(
-        "select * from company where email=$1",
+        "select * from hirejob_company where email=$1",
         [email],
         (err, result) => {
           if (err) {
@@ -72,7 +72,7 @@ const authModel = {
     return new Promise((resolve, reject) => {
       db.query(
         //postgresql
-        `insert into users (id_user,full_name,email,password,phone) values ($1,$2,$3,$4,$5)`,
+        `insert into hirejob_users (id_user,full_name,email,password,phone) values ($1,$2,$3,$4,$5)`,
         //jika mysql menggukanan='?' dan urutannya wajib urut
         [uuidv4(), full_name, email, password, phone],
 
@@ -98,12 +98,12 @@ const authModel = {
     return new Promise((resolve, reject) => {
       db.query(
         //postgresql
-        `insert into company (id_company,admin_company,email,password,name_company,phone,field_company) values ($1,$2,$3,$4,$5,$6,$7)`,
+        `insert into hirejob_company (id_company,admin_company,email,password,name_company,phone,field_company) values ($1,$2,$3,$4,$5,$6,$7)`,
         //jika mysql menggukanan='?' dan urutannya wajib urut
         [uuidv4(), admin_company, email, password, company, phone, field],
         (err, result) => {
           if (err) {
-            console.log(err);
+            // console.log(err);
             return reject(err);
           } else {
             return resolve("Register success"); //jgn ditampilkan hasil regis nya agar nanti jwt nya aman

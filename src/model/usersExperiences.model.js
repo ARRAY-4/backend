@@ -4,15 +4,15 @@ const { v4: uuidv4 } = require('uuid');
 
 const usersExperiencesModel = {
     // CREATE
-    create: ({ company_name, job_position, day_in, day_out, description }) => {
+    create: ({ id_user, company_name, job_position, day_in, day_out, description }) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO experiences (id_exp, company_name, job_position, day_in, day_out, description) VALUES ('${uuidv4()}','${company_name}','${job_position}','${day_in}','${day_out}','${description}')`,
+                `INSERT INTO hirejob_experiences (id_exp, id_user, company_name, job_position, day_in, day_out, description) VALUES ('${uuidv4()}', '${id_user}', '${company_name}','${job_position}','${day_in}','${day_out}','${description}')`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
                     } else {
-                        return resolve({ company_name, job_position, day_in, day_out, description })
+                        return resolve({ id_user, company_name, job_position, day_in, day_out, description })
                     }
                 }
             )
@@ -37,7 +37,7 @@ const usersExperiencesModel = {
     read: function (search, company_name, sortBy = 'ASC', limit = 25, offset = 0) {
         return new Promise((resolve, reject) => {
             db.query(
-                `SELECT * from experiences ${this.query(search, company_name, sortBy, limit, offset)}`,
+                `SELECT * from hirejob_experiences ${this.query(search, company_name, sortBy, limit, offset)}`,
                 (err, result) => {
                     // console.log(result);
                     if (err) {
@@ -50,10 +50,17 @@ const usersExperiencesModel = {
         })
     },
 
-    readDetail: (id_exp) => {
+    readDetail: (id_user) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `SELECT * from experiences WHERE id_exp='${id_exp}'`,
+                `SELECT 
+                p.id_user, p.full_name, p.job_desk, p.employment_type,
+                json_agg(row_to_json(pi)) skills
+                FROM hirejob_users p
+                INNER JOIN hirejob_experiences pi ON p.id_user = pi.id_user
+                AND p.id_user = '${id_user}'
+                GROUP BY p.id_user`,
+                // `SELECT * from hirejob_experiences WHERE id_exp='${id_exp}'`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
@@ -67,13 +74,13 @@ const usersExperiencesModel = {
 
     update: ({ id, company_name, job_position, day_in, day_out, description }) => {
         return new Promise((resolve, reject) => {
-            db.query(`SELECT * FROM experiences WHERE id_exp='${id}'`, (err, result) => {
+            db.query(`SELECT * FROM hirejob_experiences WHERE id_exp='${id}'`, (err, result) => {
                 // console.log(result);
                 if (err) {
                     return reject(err.message);
                 } else {
                     db.query(
-                        `UPDATE experiences SET company_name='${company_name || result.rows[0].company_name}', job_position='${job_position || result.rows[0].job_position}', day_in='${day_in || result.rows[0].day_in}', day_out='${day_out || result.rows[0].day_out}', description='${description || result.rows[0].description}' WHERE id_exp='${id}'`,
+                        `UPDATE hirejob_experiences SET company_name='${company_name || result.rows[0].company_name}', job_position='${job_position || result.rows[0].job_position}', day_in='${day_in || result.rows[0].day_in}', day_out='${day_out || result.rows[0].day_out}', description='${description || result.rows[0].description}' WHERE id_exp='${id}'`,
                         (err, result) => {
                             if (err) {
                                 return reject(err.message)
@@ -92,7 +99,7 @@ const usersExperiencesModel = {
     remove: (id) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `DELETE from experiences WHERE id_exp='${id}'`,
+                `DELETE from hirejob_experiences WHERE id_exp='${id}'`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
